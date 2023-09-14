@@ -7,7 +7,7 @@ with open("lista_de_sitios.txt", "r") as f:
     urls = [url.strip() for url in f.readlines()]  # Remove any trailing whitespace or newline
 
 # Create the directory if it doesn't exist
-os.makedirs('information', exist_ok=True)
+os.makedirs('informacion', exist_ok=True)
 
 # Iterate through each link
 for i, url in enumerate(urls):
