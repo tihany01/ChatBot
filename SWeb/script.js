@@ -23,7 +23,7 @@ const handleChat = () => {
     chatbox.scrollTo(0, chatbox.scrollHeight);
 
     setTimeout(() => {
-        const incomingChatLi = createChatLi("Thinking...", "incoming");
+        const incomingChatLi = createChatLi("Pensando...", "incoming");
         chatbox.appendChild(incomingChatLi);
 
         fetch(API_URL, {
@@ -35,7 +35,7 @@ const handleChat = () => {
         }).then(response => response.json())
           .then(data => incomingChatLi.querySelector("p").textContent = data.respuesta)
           .catch((error) => {
-            incomingChatLi.querySelector("p").textContent = "Oops! Something went wrong. Please try again.";
+            incomingChatLi.querySelector("p").textContent = "¡Ups! Algo salió mal. Inténtalo de nuevo.";
           }).finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
     }, 600);
 }
