@@ -5,14 +5,13 @@ import openai
 from chromadb.api.types import Embeddings
 from langchain.embeddings.openai import OpenAIEmbeddings
 
-# Carga las variables de entorno del archivo .env
+
 load_dotenv(find_dotenv())
 
-# Configura tu clave de API de OpenAI
 os.environ["OPENAI_API_KEY"] = os.environ['OPENAI_API_KEY']
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
-# Define el directorio donde se guardarán los vectores
+
 directorio_vectores = 'vectores/'
 
 # Crea el directorio si no existe
