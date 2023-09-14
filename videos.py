@@ -6,44 +6,44 @@ from langchain.document_loaders.generic import GenericLoader
 from langchain.document_loaders.parsers import OpenAIWhisperParser
 from langchain.document_loaders.blob_loaders.youtube_audio import YoutubeAudioLoader
 
-# Carga la clave API de un archivo .env
+
 load_dotenv(find_dotenv())
 os.environ["OPENAI_API_KEY"] = os.environ['OPENAI_API_KEY']
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
-# Directorio donde guardar los audios y textos descargados
+# Directory to save downloaded audios and texts
 saveDir = 'informacion/'
 
-# Lee el archivo que contiene las URLs de los videos
+# Read the file containing the video URLs
 with open("links_videos.txt", "r") as f:
     video_urls = f.readlines()
 
-# Procesa cada URL
+# Process each URL
 for videoURL in video_urls:
-    videoURL = videoURL.strip()  # Elimina espacios y saltos de línea
+    videoURL = videoURL.strip()  # Remove spaces and line breaks
     print(f"\nProcesando {videoURL}...")
     
-    # Obtiene el título del video usando pytube
+    # Get the video title using pytube
     yt = YouTube(videoURL)
     video_title = yt.title
     print(f"Título del video: {video_title}")
     
-    # Reemplaza caracteres no deseados en el título para que sea un nombre de archivo válido
+    # Replace unwanted characters in the title to make it a valid filename
     valid_title = "".join(c for c in video_title if c.isalnum() or c.isspace()).rstrip()
     
-    # Verifica si el archivo ya existe
+    # Check if the file already exists
     if os.path.exists(f"{saveDir}/{valid_title}.txt"):
         print(f"El video '{valid_title}' ya ha sido procesado, pasando al siguiente.")
         continue
     
-    # Carga y procesa el audio del video
+    # Load and process the audio from the video
     print("Iniciando la carga y procesamiento del audio...")
     loader = GenericLoader(YoutubeAudioLoader([videoURL], saveDir), OpenAIWhisperParser())
     docs = loader.load()
     
-    # Para fines de depuración: imprime el contenido del documento
+    # For debugging purposes: print the document content
     print("Contenido del documento:", docs[0].page_content)
     
-    # Guarda el contenido del video en un archivo .txt con el título del video como nombre del archivo
+    # Save the video content in a .txt file with the video title as filename
     with open(f"{saveDir}/{valid_title}.txt", "w") as f:
         f.write(docs[0].page_content)
